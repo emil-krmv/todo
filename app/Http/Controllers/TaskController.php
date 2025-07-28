@@ -1,0 +1,85 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests\StoreTaskRequest;
+use App\Http\Requests\UpdateTaskRequest;
+use App\Models\Task;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+
+class TaskController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
+    {
+        $query = Task::query()->where('user_id', $request->user()->id);
+        if ($request->filled('status')) {
+            $query->whereIn('status', $request->status);
+        }
+        if ($request->filled('priority')) {
+            $query->whereIn('priority', $request->priority);
+        }
+        if ($request->filled('due_date')) {
+            $query->where('due_date', $request->due_date);
+        }
+        $tasks = $query->paginate(30)->sortByDesc('updated_at');
+        return view('tasks.index', ['tasks' => $tasks]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return view('tasks.create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(StoreTaskRequest $request): RedirectResponse
+    {
+        $request->user()->tasks()->create($request->validated());
+
+        return to_route('tasks.index');
+    }
+
+    /**
+     * Display the resource.
+     */
+    public function show(Task $task)
+    {
+        return view('tasks.show', ['tasks' => $task]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Task $task)
+    {
+        return view('tasks.edit', ['tasks' => $task]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(UpdateTaskRequest $request, Task $task)
+    {
+       $task->update($request->validated());
+
+        return to_route('tasks.index');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Task $task)
+    {
+        $task->delete();
+
+        return back();
+    }
+}
