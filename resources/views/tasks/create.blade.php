@@ -16,8 +16,7 @@
         </div>
 
 
-        <fieldset class="px-4 py-2 flex flex-col border-2 border-black">
-            <legend class="px-2">Priority</legend>
+        <x-fieldset legend="Priority">
             <div>
                 <input id="low" type="radio" class="bg-blue-200" name="priority" value="low" checked>
                 <label for="low">Low</label>
@@ -32,7 +31,7 @@
                 <input id="high" type="radio" class="bg-blue-200" name="priority" value="high">
                 <label for="high">High</label>
             </div>
-        </fieldset>
+        </x-fieldset>
 
         <div class="flex flex-col">
             <label for="due_date">Should be done until:</label>

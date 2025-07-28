@@ -1,4 +1,4 @@
-<div class="border-dashed border-4 border-blue-200 p-3">
+<div class="border-dashed border-3 p-3">
     <p class="text-xl">Task #{{ $task->id }}</p>
     <div class="px-2">
         <p class="truncate">{{ $task->title }}</p>

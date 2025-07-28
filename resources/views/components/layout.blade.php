@@ -22,7 +22,7 @@
                 <a class="text-5xl text-center block w-fit mx-auto" href="{{ route('tasks.index') }}">ToDo App</a>
             </header>
 
-            <main class="mt-7.5">
+            <main class="mt-7.5 space-y-5">
                 {{ $slot }}
             </main>
         </div>
