@@ -22,9 +22,6 @@ class TaskController extends Controller
         if ($request->filled('priority')) {
             $query->whereIn('priority', $request->priority);
         }
-        if ($request->filled('due_date')) {
-            $query->where('due_date', $request->due_date);
-        }
         $tasks = $query->get()->sortByDesc('updated_at');
         return view('tasks.index', ['tasks' => $tasks]);
     }
