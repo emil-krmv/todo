@@ -10,7 +10,7 @@ Route::permanentRedirect('/', '/login');
 
 Route::resource('tasks', TaskController::class)->middleware('auth');
 
-Route::singleton('profile', ProfileController::class);
+Route::singleton('profile', ProfileController::class)->middleware('auth');
 
 Route::controller(RegisterController::class)->group(function () {
     Route::get('/register', 'create')->name('register');
