@@ -15,7 +15,7 @@ class TaskController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Task::query()->with('user')->where('user_id', $request->user()->id);
+        $query = Task::with('user')->ownedBy($request->user());
         if ($request->filled('status')) {
             $query->whereIn('status', $request->status);
         }
