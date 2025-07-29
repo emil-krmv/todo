@@ -8,17 +8,21 @@ use Illuminate\Support\Facades\Route;
 
 Route::permanentRedirect('/', '/login');
 
-Route::resource('tasks', TaskController::class)->middleware('auth');
+Route::middleware('auth')->group(function () {
+    Route::resource('tasks', TaskController::class);
+    Route::singleton('profile', ProfileController::class);
 
-Route::singleton('profile', ProfileController::class)->middleware('auth');
-
-Route::controller(RegisterController::class)->group(function () {
-    Route::get('/register', 'create')->name('register');
-    Route::post('/register', 'store');
+    Route::delete('/logout', [SessionController::class, 'destroy'])->name('logout');
 });
 
-Route::controller(SessionController::class)->group(function () {
-    Route::get('/login', 'create')->name('login');
-    Route::post('/login', 'store');
-    Route::delete('/login', 'destroy')->name('logout');
+Route::middleware('guest')->group(function () {
+    Route::controller(RegisterController::class)->group(function () {
+        Route::get('/register', 'create')->name('register');
+        Route::post('/register', 'store');
+    });
+
+    Route::controller(SessionController::class)->group(function () {
+        Route::get('/login', 'create')->name('login');
+        Route::post('/login', 'store');
+    });
 });
