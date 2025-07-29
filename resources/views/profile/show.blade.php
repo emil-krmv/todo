@@ -3,27 +3,37 @@
         Profile
     </x-slot:title>
 
-    <h1>Your Profile</h1>
     <div>
-        <p>Name: {{ $user->name }}</p>
-        <p>Email: {{ $user->email }}</p>
+        <x-fieldset legend="About">
+            <div class="flex gap-x-2 py-2">
+                <x-fieldset legend="Name">
+                    <p class="text-xl">{{ $user->name }}</p>
+                </x-fieldset>
+                <x-fieldset legend="Email">
+                    <p class="text-xl">{{ $user->email }}</p>
+                </x-fieldset>
+            </div>
+        </x-fieldset>
+        <div class="flex gap-x-1 mt-1">
+            <x-button :href="route('profile.edit')">Edit</x-button>
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                @method('delete')
+                <x-form.button>
+                    Log Out
+                </x-form.button>
+            </form>
+        </div>
+    </div>
+
+    <x-fieldset legend="Stats">
         <ul>
             <li>Total tasks - {{ $user->tasks->count() }}</li>
             <li>Pending - {{ $user->tasks->where('status', 'pending')->count() }}</li>
             <li>In progress - {{ $user->tasks->where('status', 'in_progress')->count() }}</li>
             <li>Done - {{ $user->tasks->where('status', 'done')->count() }}</li>
         </ul>
-    </div>
-
-    <x-button href="{{ route('profile.edit') }}">Edit</x-button>
-
-    <form action="{{ route('logout') }}" method="POST">
-        @csrf
-        @method('delete')
-        <x-form.button>
-            Log Out
-        </x-form.button>
-    </form>
+    </x-fieldset>
 
     <x-button href="/tasks">Back</x-button>
 </x-layout>

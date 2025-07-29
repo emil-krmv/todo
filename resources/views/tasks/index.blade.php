@@ -45,7 +45,7 @@
             </div>
         </x-fieldset>
 
-        <div class="pt-1.5 space-x-2">
+        <div class="pt-1.5">
             <x-button :href="route('tasks.index')">Clear</x-button>
             <x-form.button>Filter</x-form.button>
         </div>
