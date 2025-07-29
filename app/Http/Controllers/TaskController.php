@@ -15,7 +15,7 @@ class TaskController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Task::query()->where('user_id', $request->user()->id);
+        $query = Task::query()->with('user')->where('user_id', $request->user()->id);
         if ($request->filled('status')) {
             $query->whereIn('status', $request->status);
         }
@@ -25,7 +25,7 @@ class TaskController extends Controller
         if ($request->filled('due_date')) {
             $query->where('due_date', $request->due_date);
         }
-        $tasks = $query->paginate(30)->sortByDesc('updated_at');
+        $tasks = $query->get()->sortByDesc('updated_at');
         return view('tasks.index', ['tasks' => $tasks]);
     }
 
