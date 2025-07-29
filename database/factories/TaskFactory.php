@@ -21,7 +21,7 @@ class TaskFactory extends Factory
             'description' => fake()->realText,
             'status' => fake()->randomElement(['pending', 'in_progress', 'done']),
             'priority' => fake()->randomElement(['low', 'medium', 'high']),
-            'due_date' => fake()->dateTimeBetween('today', '+10 days')
+            'due_date' => fake()->dateTimeBetween('today', '+10 days')->format('Y-m-d')
         ];
     }
 
