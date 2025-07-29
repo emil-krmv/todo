@@ -18,7 +18,7 @@ class TaskController extends Controller
         $tasks = Task::with('user')
             ->ownedBy($request->user())
             ->filter($request->only(['status', 'priority']))
-            ->orderBy('updated_at')
+            ->orderBy('updated_at', 'desc')
             ->get();
 
         return view('tasks.index', ['tasks' => $tasks]);
