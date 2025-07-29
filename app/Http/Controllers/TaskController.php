@@ -15,14 +15,12 @@ class TaskController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Task::with('user')->ownedBy($request->user());
-        if ($request->filled('status')) {
-            $query->whereIn('status', $request->status);
-        }
-        if ($request->filled('priority')) {
-            $query->whereIn('priority', $request->priority);
-        }
-        $tasks = $query->get()->sortByDesc('updated_at');
+        $tasks = Task::with('user')
+            ->ownedBy($request->user())
+            ->filter($request->only(['status', 'priority']))
+            ->orderBy('updated_at')
+            ->get();
+
         return view('tasks.index', ['tasks' => $tasks]);
     }
 

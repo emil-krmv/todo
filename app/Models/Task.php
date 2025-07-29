@@ -27,6 +27,21 @@ class Task extends Model
         $query->where('user_id', $user->id);
     }
 
+    /**
+     * Scope a query to only include filtered tasks
+     */
+    #[Scope]
+    protected function filter(Builder $query, array $filters): void
+    {
+        if (!empty($filters['status'])) {
+            $query->whereIn('status', $filters['status']);
+        }
+
+        if (!empty($filters['priority'])) {
+            $query->whereIn('priority', $filters['priority']);
+        }
+    }
+
     public function user(): BelongsTo {
         return $this->belongsTo(User::class);
     }
