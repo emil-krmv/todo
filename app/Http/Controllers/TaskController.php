@@ -7,6 +7,8 @@ use App\Http\Requests\UpdateTaskRequest;
 use App\Models\Task;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use Symfony\Component\HttpFoundation\Response;
 
 class TaskController extends Controller
 {
@@ -47,6 +49,8 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
+        abort_if(Gate::denies('manage-task', $task), Response::HTTP_FORBIDDEN);
+
         return view('tasks.show', ['task' => $task]);
     }
 
@@ -55,6 +59,8 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
+        abort_if(Gate::denies('manage-task', $task), Response::HTTP_FORBIDDEN);
+
         return view('tasks.edit', ['task' => $task]);
     }
 
@@ -63,7 +69,9 @@ class TaskController extends Controller
      */
     public function update(UpdateTaskRequest $request, Task $task)
     {
-       $task->update($request->validated());
+        abort_if(Gate::denies('manage-task', $task), Response::HTTP_FORBIDDEN);
+
+        $task->update($request->validated());
 
         return to_route('tasks.index');
     }
@@ -73,6 +81,8 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
+        abort_if(Gate::denies('manage-task', $task), Response::HTTP_FORBIDDEN);
+
         $task->delete();
 
         return back();
