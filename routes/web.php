@@ -11,9 +11,12 @@ Route::permanentRedirect('/', '/login');
 
 Route::middleware('auth')->group(function () {
     Route::resource('tasks', TaskController::class);
-    Route::singleton('profile', ProfileController::class);
 
-    Route::delete('/logout', [SessionController::class, 'destroy'])->name('logout');
+    Route::singleton('profile', ProfileController::class)
+        ->middleware('verified');
+
+    Route::delete('/logout', [SessionController::class, 'destroy'])
+        ->name('logout');
 });
 
 Route::middleware('guest')->group(function () {
@@ -29,11 +32,17 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::get('/email/verify', function () {
-    return view('auth.verify-email');
+    if (auth()->user()->hasVerifiedEmail()) {
+        return redirect()->action([ProfileController::class, 'show']);
+    }
+
+    return redirect()->route('tasks.index')
+        ->with('notif', 'You need to verify your email to view profile.');
 })->middleware('auth')->name('verification.notice');
 
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
 
-    return redirect('/tasks');
+    return redirect()->route('tasks.index')
+        ->with('notif', 'Your email has been verified!');
 })->middleware(['auth', 'signed'])->name('verification.verify');
