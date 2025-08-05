@@ -1,7 +1,16 @@
 <x-layout>
     @auth
         <div class="flex justify-between">
-            <x-button href="{{ route('profile.show') }}">Profile</x-button>
+            <div class="flex gap-x-2">
+                <x-button href="{{ route('profile.show') }}">Profile</x-button>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    @method('delete')
+                    <x-form.button>
+                        Log Out
+                    </x-form.button>
+                </form>
+            </div>
             <x-button href="{{ route('tasks.create') }}">Create Task</x-button>
         </div>
     @endauth

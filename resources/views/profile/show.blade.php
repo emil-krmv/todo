@@ -14,16 +14,8 @@
                 </x-fieldset>
             </div>
         </x-fieldset>
-        <div class="flex gap-x-1 mt-1">
-            <x-button :href="route('profile.edit')">Edit</x-button>
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                @method('delete')
-                <x-form.button>
-                    Log Out
-                </x-form.button>
-            </form>
-        </div>
+
+        <x-button :href="route('profile.edit')">Edit</x-button>
     </div>
 
     <x-fieldset legend="Stats">
