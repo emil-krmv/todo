@@ -50,6 +50,13 @@
             <x-form.button>Filter</x-form.button>
         </div>
     </form>
+
+    @if (session('notif'))
+        <div class="bg-green-500 p-4 border-2">
+            {{ session('notif') }}
+        </div>
+    @endif
+
     <div class="grid grid-cols-2 gap-3">
         @if($tasks->count() > 0)
             @foreach($tasks as $task)

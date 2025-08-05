@@ -41,7 +41,8 @@ class TaskController extends Controller
     {
         $request->user()->tasks()->create($request->validated());
 
-        return to_route('tasks.index');
+        return redirect()->route('tasks.index')
+            ->with('notif', 'Task created successfully.');
     }
 
     /**
@@ -73,7 +74,8 @@ class TaskController extends Controller
 
         $task->update($request->validated());
 
-        return to_route('tasks.index');
+        return redirect()->route('tasks.index')
+            ->with('notif', 'Task updated successfully.');
     }
 
     /**
@@ -85,6 +87,7 @@ class TaskController extends Controller
 
         $task->delete();
 
-        return back();
+        return redirect()->route('tasks.index')
+            ->with('notif', 'Task deleted successfully.');
     }
 }
