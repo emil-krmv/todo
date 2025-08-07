@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\UserRegistered;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class RegisterController extends Controller
 {
@@ -22,9 +24,10 @@ class RegisterController extends Controller
 
         $user = User::create($creds);
 
-        Auth::login($user);
-
+        Mail::to($user)->send(new UserRegistered($user->name));
         event(new Registered($user));
+
+        Auth::login($user);
 
         return to_route('tasks.index');
     }
